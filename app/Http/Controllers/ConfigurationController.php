@@ -66,14 +66,12 @@ class ConfigurationController extends Controller
             ], 404);
         }
 
-        // Vérifier si le fichier existe
         if (!file_exists($config->shop_json_path)) {
             return response()->json([
-                'error' => 'Le fichier de configuration est introuvable à l\'emplacement spécifié'
+                'error' => 'Le fichier de configuration est introuvable'
             ], 404);
         }
 
-        // Lire le contenu du fichier JSON
         try {
             $jsonContent = file_get_contents($config->shop_json_path);
             $shopConfig = json_decode($jsonContent, true);
@@ -88,6 +86,85 @@ class ConfigurationController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'error' => 'Erreur lors de la lecture du fichier: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * Update the shop JSON configuration
+     */
+    public function updateShopConfig(Request $request)
+    {
+        $config = ArkServerConfig::first();
+        
+        if (!$config || !$config->shop_json_path) {
+            return response()->json([
+                'error' => 'Aucune configuration trouvée'
+            ], 404);
+        }
+
+        if (!file_exists($config->shop_json_path)) {
+            return response()->json([
+                'error' => 'Le fichier de configuration est introuvable'
+            ], 404);
+        }
+
+        try {
+            // Lire le fichier JSON actuel
+            $jsonContent = file_get_contents($config->shop_json_path);
+            $currentConfig = json_decode($jsonContent, true);
+            
+            if (json_last_error() !== JSON_ERROR_NONE) {
+                return response()->json([
+                    'error' => 'Erreur de lecture du fichier JSON'
+                ], 500);
+            }
+
+            // Récupérer les nouvelles données
+            $newData = $request->all();
+
+            // Fusionner les données (mettre à jour uniquement les champs envoyés)
+            if (isset($newData['Mysql'])) {
+                $currentConfig['Mysql'] = array_merge($currentConfig['Mysql'] ?? [], $newData['Mysql']);
+            }
+
+            if (isset($newData['General'])) {
+                // Gérer TimedPointsReward séparément
+                if (isset($newData['General']['TimedPointsReward'])) {
+                    if (!isset($currentConfig['General']['TimedPointsReward'])) {
+                        $currentConfig['General']['TimedPointsReward'] = [];
+                    }
+                    $currentConfig['General']['TimedPointsReward'] = array_merge(
+                        $currentConfig['General']['TimedPointsReward'],
+                        $newData['General']['TimedPointsReward']
+                    );
+                    unset($newData['General']['TimedPointsReward']);
+                }
+                
+                $currentConfig['General'] = array_merge($currentConfig['General'] ?? [], $newData['General']);
+            }
+
+            if (isset($newData['Messages'])) {
+                $currentConfig['Messages'] = array_merge($currentConfig['Messages'] ?? [], $newData['Messages']);
+            }
+
+            // Sauvegarder le fichier avec une indentation propre
+            $jsonOutput = json_encode($currentConfig, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+            
+            if (file_put_contents($config->shop_json_path, $jsonOutput) === false) {
+                return response()->json([
+                    'error' => 'Impossible d\'écrire dans le fichier'
+                ], 500);
+            }
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Configuration sauvegardée avec succès'
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => 'Erreur lors de la sauvegarde: ' . $e->getMessage()
             ], 500);
         }
     }

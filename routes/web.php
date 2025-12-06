@@ -24,6 +24,7 @@ Route::post('/configuration/create', [ConfigurationController::class, 'store'])-
 Route::post('/configuration/edit', [ConfigurationController::class, 'update'])->name('configuration.update');
 Route::delete('/configuration/delete', [ConfigurationController::class, 'destroy'])->name('configuration.destroy');
 Route::get('/configuration/shop', [ConfigurationController::class, 'loadShopConfig'])->name('configuration.shop');
+Route::post('/configuration/shop/update', [ConfigurationController::class, 'updateShopConfig'])->name('configuration.shop.update');
 
 Route::get('/players', [ArkControllerTest::class, 'players']);
 
