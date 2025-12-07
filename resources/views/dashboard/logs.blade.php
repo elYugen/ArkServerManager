@@ -57,13 +57,13 @@
 <div class="main-content">
     <div class="container py-4">
 
-        <div class="mt-5">
+        <div class="mt-4">
             <h2>Logs</h2>
             <div class="table-responsive">
                 <table id="logsTable" class="display" style="width:100%">
                     <thead>
                         <tr>
-                            <th>ID</th>
+                            <th style="width: 3%">ID</th>
                             <th>User</th>
                             <th>Page</th>
                             <th>Log</th>

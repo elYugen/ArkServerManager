@@ -909,55 +909,55 @@ $('#addItemForm').on('submit', function(e) {
     if (!shopConfig.ShopItems) shopConfig.ShopItems = {};
     shopConfig.ShopItems[itemId] = itemData;
 
-    saveShopConfig('Article créé avec succès');
+    saveToServer('Article créé avec succès');
 });
 
 function deleteKit(kitName) {
     if (confirm(`Voulez-vous vraiment supprimer le kit "${kitName}" ?`)) {
         delete shopConfig.Kits[kitName];
-        saveShopConfig('Kit supprimé avec succès');
+        saveToServer('Kit supprimé avec succès');
     }
 }
 
 function deleteItem(itemId) {
     if (confirm(`Voulez-vous vraiment supprimer l'article "${itemId}" ?`)) {
         delete shopConfig.ShopItems[itemId];
-        saveShopConfig('Article supprimé avec succès');
+        saveToServer('Article supprimé avec succès');
     }
 }
 
-function saveShopConfig(message) {
-    $.ajax({
-        url: '{{ route("shop.save") }}',
-        method: 'POST',
-        data: JSON.stringify(shopConfig),
-        contentType: 'application/json',
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        },
-        success: function() {
-            $('#successMessage').text(message);
-            const successModal = new bootstrap.Modal(document.getElementById('successModal'));
-            successModal.show();
+// function saveShopConfig(message) {
+//     $.ajax({
+//         url: '{{ route("shop.save") }}',
+//         method: 'POST',
+//         data: JSON.stringify(shopConfig),
+//         contentType: 'application/json',
+//         headers: {
+//             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+//         },
+//         success: function() {
+//             $('#successMessage').text(message);
+//             const successModal = new bootstrap.Modal(document.getElementById('successModal'));
+//             successModal.show();
             
-            // Fermer les modals d'ajout et recharger les tables
-            $('#addKitModal').modal('hide');
-            $('#addItemModal').modal('hide');
-            loadShopData();
+//             // Fermer les modals d'ajout et recharger les tables
+//             $('#addKitModal').modal('hide');
+//             $('#addItemModal').modal('hide');
+//             loadShopData();
             
-            // Reset forms
-            $('#addKitForm')[0].reset();
-            $('#addItemForm')[0].reset();
-            kitItemCounter = 1;
-            kitDinoCounter = 1;
-            $('#kitItemsList .kit-item-row:not(:first)').remove();
-            $('#kitDinosList .kit-dino-row:not(:first)').remove();
-        },
-        error: function(xhr) {
-            showError(xhr.responseJSON?.error || 'Erreur lors de la sauvegarde');
-        }
-    });
-}
+//             // Reset forms
+//             $('#addKitForm')[0].reset();
+//             $('#addItemForm')[0].reset();
+//             kitItemCounter = 1;
+//             kitDinoCounter = 1;
+//             $('#kitItemsList .kit-item-row:not(:first)').remove();
+//             $('#kitDinosList .kit-dino-row:not(:first)').remove();
+//         },
+//         error: function(xhr) {
+//             showError(xhr.responseJSON?.error || 'Erreur lors de la sauvegarde');
+//         }
+//     });
+// }
 
 function showError(message) {
     $('#errorMessage').text(message);

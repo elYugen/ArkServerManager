@@ -66,7 +66,7 @@ class ShopController extends Controller
             Logs::create([
                 'user_id' => Auth::user()->id,
                 'on_page' => 'Boutique',
-                'logs'    => 'A sauvegardé la configuration du shop'
+                'logs'    => 'A mis à jour la configuration du shop'
             ]);
 
             return response()->json([
