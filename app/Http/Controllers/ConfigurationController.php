@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\ArkServerConfig;
+use App\Models\Logs;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ConfigurationController extends Controller
 {
@@ -28,16 +30,30 @@ class ConfigurationController extends Controller
             'shop_json_path' => 'required|string|max:500'
         ]);
 
-        // Vérifier si une config existe déjà
+        // verif si une config existe déjà
         $config = ArkServerConfig::first();
         
         if ($config) {
-            // Mettre à jour la config existante
+            // maj la config existante
             $config->update($validated);
+
+            Logs::create([
+                'user_id' => Auth::user()->id,
+                'on_page' => 'Configuration',
+                'logs'    => 'A mis à jour la configuration serveur'
+            ]);
+
             $message = 'Configuration mise à jour avec succès!';
         } else {
-            // Créer une nouvelle config
+            // créer une config
             ArkServerConfig::create($validated);
+
+            Logs::create([
+                'user_id' => Auth::user()->id,
+                'on_page' => 'Configuration',
+                'logs'    => 'A créé une nouvelle configuration serveur'
+            ]);
+
             $message = 'Configuration créée avec succès!';
         }
 
@@ -158,6 +174,12 @@ class ConfigurationController extends Controller
                 ], 500);
             }
 
+            Logs::create([
+                'user_id' => Auth::user()->id,
+                'on_page' => 'Configuration',
+                'logs'    => 'A modifier la configuration ArkShop'
+            ]);
+
             return response()->json([
                 'success' => true,
                 'message' => 'Configuration sauvegardée avec succès'
@@ -186,6 +208,12 @@ class ConfigurationController extends Controller
 
         return redirect()->route('configuration.index')
             ->with('success', 'Configuration mise à jour avec succès!');
+
+        Logs::create([
+            'user_id' => Auth::user()->id,
+            'on_page' => 'Configuration',
+            'logs'    => 'A modifier la configuration serveur'
+        ]);
     }
 
     /**
@@ -194,6 +222,12 @@ class ConfigurationController extends Controller
     public function destroy(ArkServerConfig $arkServerConfig)
     {
         $arkServerConfig->delete();
+
+        Logs::create([
+            'user_id' => Auth::user()->id,
+            'on_page' => 'Configuration',
+            'logs'    => 'A supprimé une configuration serveur'
+        ]);
 
         return redirect()->route('configuration.index')
             ->with('success', 'Configuration supprimée avec succès!');

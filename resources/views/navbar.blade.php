@@ -147,6 +147,11 @@
             </a>
         </li>
         <li class="nav-item">
+            <a href="{{ route('logs.index') }}" class="nav-link {{ request()->routeIs('logs.*') ? 'active' : '' }}" class="nav-link">
+                <span><i class="bi bi-newspaper"></i> Logs administration</span>
+            </a>
+        </li>
+        <li class="nav-item">
             <a href="{{ route('configuration.index') }}" class="nav-link {{ request()->routeIs('configuration.*') ? 'active' : '' }}">
                 <span><i class="bi bi-gear"></i> Configuration</span>
             </a>

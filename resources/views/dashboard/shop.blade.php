@@ -427,6 +427,134 @@
     </div>
 </div>
 
+{{-- Modal View Kit --}}
+<div class="modal fade" id="viewKitModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-info text-white">
+                <h5 class="modal-title">
+                    <i class="bi bi-eye me-2"></i>Détails du Kit
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body" id="viewKitContent">
+                <!-- Contenu injecté dynamiquement -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{-- Modal View Item --}}
+<div class="modal fade" id="viewItemModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-info text-white">
+                <h5 class="modal-title">
+                    <i class="bi bi-eye me-2"></i>Détails de l'Article
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body" id="viewItemContent">
+                <!-- Contenu injecté dynamiquement -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{-- Modal Edit Kit --}}
+<div class="modal fade" id="editKitModal" tabindex="-1">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <i class="bi bi-pencil-square me-2"></i>Modifier le Kit
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form id="editKitForm">
+                <input type="hidden" id="edit_kit_name">
+                <div class="modal-body">
+                    <!-- Identique au form d'ajout mais pré-rempli -->
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Description</label>
+                            <input type="text" class="form-control" id="edit_kit_description">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Prix (points)</label>
+                            <input type="number" class="form-control" id="edit_kit_price">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Quantité</label>
+                            <input type="number" class="form-control" id="edit_kit_amount">
+                        </div>
+                    </div>
+                    <div id="editKitItemsList"></div>
+                    <div id="editKitDinosList"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-check-circle me-1"></i>Sauvegarder
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{{-- Modal Edit Item --}}
+<div class="modal fade" id="editItemModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <i class="bi bi-pencil-square me-2"></i>Modifier l'Article
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form id="editItemForm">
+                <input type="hidden" id="edit_item_id">
+                <div class="modal-body">
+                    <div class="row mb-3">
+                        <div class="col-md-12">
+                            <label class="form-label">Description</label>
+                            <input type="text" class="form-control" id="edit_item_description">
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-4">
+                            <label class="form-label">Prix (points)</label>
+                            <input type="number" class="form-control" id="edit_item_price">
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Niveau Min</label>
+                            <input type="number" class="form-control" id="edit_item_min_level">
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Niveau Max</label>
+                            <input type="number" class="form-control" id="edit_item_max_level">
+                        </div>
+                    </div>
+                    <div id="editItemFields"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-check-circle me-1"></i>Sauvegarder
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 @include('footer')
 @endsection
 
@@ -526,9 +654,17 @@ function loadKitsTable() {
             kit.DefaultAmount || 0,
             kit.Items?.length || 0,
             kit.Dinos?.length || 0,
-            `<button class="btn btn-sm btn-danger" onclick="deleteKit('${name}')">
-                <i class="bi bi-trash"></i>
-            </button>`
+            `<div class="btn-group" role="group">
+                <button class="btn btn-sm btn-info" onclick='viewKit(${JSON.stringify(name)})' title="Voir">
+                    <i class="bi bi-eye"></i>
+                </button>
+                <button class="btn btn-sm btn-primary" onclick='editKit(${JSON.stringify(name)})' title="Modifier">
+                    <i class="bi bi-pencil"></i>
+                </button>
+                <button class="btn btn-sm btn-danger" onclick='deleteKit(${JSON.stringify(name)})' title="Supprimer">
+                    <i class="bi bi-trash"></i>
+                </button>
+            </div>`
         ]);
     });
 
@@ -565,9 +701,17 @@ function loadItemsTable() {
             `<span class="badge bg-success">${item.Price || 0} pts</span>`,
             level,
             item.Blueprint ? `<small>${item.Blueprint.substring(0, 30)}...</small>` : '-',
-            `<button class="btn btn-sm btn-danger" onclick="deleteItem('${id}')">
-                <i class="bi bi-trash"></i>
-            </button>`
+            `<div class="btn-group" role="group">
+                <button class="btn btn-sm btn-info" onclick='viewItem(${JSON.stringify(id)})' title="Voir">
+                    <i class="bi bi-eye"></i>
+                </button>
+                <button class="btn btn-sm btn-primary" onclick='editItem(${JSON.stringify(id)})' title="Modifier">
+                    <i class="bi bi-pencil"></i>
+                </button>
+                <button class="btn btn-sm btn-danger" onclick='deleteItem(${JSON.stringify(id)})' title="Supprimer">
+                    <i class="bi bi-trash"></i>
+                </button>
+            </div>`
         ]);
     });
 
@@ -820,5 +964,207 @@ function showError(message) {
     const errorModal = new bootstrap.Modal(document.getElementById('errorModal'));
     errorModal.show();
 }
+
+// View Kit
+function viewKit(kitName) {
+    const kit = shopConfig.Kits[kitName];
+    if (!kit) return;
+    
+    let html = `
+        <h5 class="mb-3"><strong>${kitName}</strong></h5>
+        <div class="row mb-3">
+            <div class="col-md-6"><strong>Description:</strong> ${kit.Description || '-'}</div>
+            <div class="col-md-3"><strong>Prix:</strong> ${kit.Price || 0} pts</div>
+            <div class="col-md-3"><strong>Quantité:</strong> ${kit.DefaultAmount || 1}</div>
+        </div>
+        ${kit.Permissions ? `<p><strong>Permissions:</strong> ${kit.Permissions}</p>` : ''}
+        ${kit.MinLevel ? `<p><strong>Niveau Min:</strong> ${kit.MinLevel}</p>` : ''}
+        ${kit.MaxLevel ? `<p><strong>Niveau Max:</strong> ${kit.MaxLevel}</p>` : ''}
+        <hr>
+    `;
+    
+    if (kit.Items && kit.Items.length > 0) {
+        html += '<h6 class="mt-3"><i class="bi bi-bag me-2"></i>Items:</h6><ul class="list-group mb-3">';
+        kit.Items.forEach(item => {
+            html += `<li class="list-group-item">
+                <strong>Blueprint:</strong> <code>${item.Blueprint}</code><br>
+                <strong>Quantité:</strong> ${item.Amount} | <strong>Qualité:</strong> ${item.Quality} | <strong>Force Blueprint:</strong> ${item.ForceBlueprint ? 'Oui' : 'Non'}
+            </li>`;
+        });
+        html += '</ul>';
+    }
+    
+    if (kit.Dinos && kit.Dinos.length > 0) {
+        html += '<h6 class="mt-3"><i class="bi bi-dragon me-2"></i>Dinos:</h6><ul class="list-group">';
+        kit.Dinos.forEach(dino => {
+            html += `<li class="list-group-item">
+                <strong>Blueprint:</strong> <code>${dino.Blueprint}</code><br>
+                <strong>Level:</strong> ${dino.Level || 10}
+                ${dino.SaddleBlueprint ? `<br><strong>Selle:</strong> <code>${dino.SaddleBlueprint}</code>` : ''}
+            </li>`;
+        });
+        html += '</ul>';
+    }
+    
+    if (!kit.Items && !kit.Dinos) {
+        html += '<p class="text-muted">Ce kit ne contient aucun item ou dino.</p>';
+    }
+    
+    $('#viewKitContent').html(html);
+    const modal = new bootstrap.Modal(document.getElementById('viewKitModal'));
+    modal.show();
+}
+
+// View Item
+function viewItem(itemId) {
+    const item = shopConfig.ShopItems[itemId];
+    if (!item) return;
+    
+    const typeColors = {
+        'item': 'primary',
+        'dino': 'success',
+        'beacon': 'warning',
+        'experience': 'info',
+        'command': 'secondary'
+    };
+    
+    let html = `
+        <h5 class="mb-3"><code>${itemId}</code></h5>
+        <div class="row mb-3">
+            <div class="col-md-3"><strong>Type:</strong> <span class="badge bg-${typeColors[item.Type] || 'secondary'}">${item.Type}</span></div>
+            <div class="col-md-9"><strong>Description:</strong> ${item.Description || '-'}</div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-4"><strong>Prix:</strong> ${item.Price || 0} pts</div>
+            <div class="col-md-4"><strong>Level Min:</strong> ${item.MinLevel || '-'}</div>
+            <div class="col-md-4"><strong>Level Max:</strong> ${item.MaxLevel || '-'}</div>
+        </div>
+        <hr>
+    `;
+    
+    if (item.Blueprint) {
+        html += `<p><strong>Blueprint:</strong><br><code>${item.Blueprint}</code></p>`;
+    }
+    
+    if (item.Level) {
+        html += `<p><strong>Level:</strong> ${item.Level}</p>`;
+    }
+    
+    if (item.Gender) {
+        html += `<p><strong>Genre:</strong> ${item.Gender}</p>`;
+    }
+    
+    if (item.SaddleBlueprint) {
+        html += `<p><strong>Selle:</strong><br><code>${item.SaddleBlueprint}</code></p>`;
+    }
+    
+    if (item.ClassName) {
+        html += `<p><strong>ClassName:</strong> ${item.ClassName}</p>`;
+    }
+    
+    if (item.Amount) {
+        html += `<p><strong>Montant XP:</strong> ${item.Amount}</p>`;
+    }
+    
+    if (item.GiveToDino !== undefined) {
+        html += `<p><strong>Donner au Dino:</strong> ${item.GiveToDino ? 'Oui' : 'Non'}</p>`;
+    }
+    
+    if (item.Items && item.Items.length > 0) {
+        html += '<h6 class="mt-3">Items/Commandes:</h6><ul class="list-group">';
+        item.Items.forEach(i => {
+            if (i.Command) {
+                html += `<li class="list-group-item">
+                    <strong>Commande:</strong> <code>${i.Command}</code><br>
+                    <strong>Exécuter en Admin:</strong> ${i.ExecuteAsAdmin ? 'Oui' : 'Non'}
+                </li>`;
+            } else {
+                html += `<li class="list-group-item">
+                    <strong>Blueprint:</strong> <code>${i.Blueprint}</code><br>
+                    Quantité: ${i.Amount}, Qualité: ${i.Quality}
+                </li>`;
+            }
+        });
+        html += '</ul>';
+    }
+    
+    $('#viewItemContent').html(html);
+    const modal = new bootstrap.Modal(document.getElementById('viewItemModal'));
+    modal.show();
+}
+
+// Edit Kit
+function editKit(kitName) {
+    const kit = shopConfig.Kits[kitName];
+    if (!kit) return;
+    
+    $('#edit_kit_name').val(kitName);
+    $('#edit_kit_description').val(kit.Description || '');
+    $('#edit_kit_price').val(kit.Price || 0);
+    $('#edit_kit_amount').val(kit.DefaultAmount || 1);
+    
+    const modal = new bootstrap.Modal(document.getElementById('editKitModal'));
+    modal.show();
+}
+
+// Edit Item
+function editItem(itemId) {
+    const item = shopConfig.ShopItems[itemId];
+    if (!item) return;
+    
+    $('#edit_item_id').val(itemId);
+    $('#edit_item_description').val(item.Description || '');
+    $('#edit_item_price').val(item.Price || 0);
+    $('#edit_item_min_level').val(item.MinLevel || '');
+    $('#edit_item_max_level').val(item.MaxLevel || '');
+    
+    const modal = new bootstrap.Modal(document.getElementById('editItemModal'));
+    modal.show();
+}
+
+// Submit Edit Kit
+$('#editKitForm').on('submit', function(e) {
+    e.preventDefault();
+    
+    const kitName = $('#edit_kit_name').val();
+    if (!shopConfig.Kits[kitName]) return;
+    
+    shopConfig.Kits[kitName].Description = $('#edit_kit_description').val();
+    shopConfig.Kits[kitName].Price = parseInt($('#edit_kit_price').val()) || 0;
+    shopConfig.Kits[kitName].DefaultAmount = parseInt($('#edit_kit_amount').val()) || 1;
+    
+    $('#editKitModal').modal('hide');
+    saveToServer('Kit modifié avec succès');
+});
+
+// Submit Edit Item
+$('#editItemForm').on('submit', function(e) {
+    e.preventDefault();
+    
+    const itemId = $('#edit_item_id').val();
+    if (!shopConfig.ShopItems[itemId]) return;
+    
+    shopConfig.ShopItems[itemId].Description = $('#edit_item_description').val();
+    shopConfig.ShopItems[itemId].Price = parseInt($('#edit_item_price').val()) || 0;
+    
+    const minLevel = $('#edit_item_min_level').val();
+    const maxLevel = $('#edit_item_max_level').val();
+    
+    if (minLevel) {
+        shopConfig.ShopItems[itemId].MinLevel = parseInt(minLevel);
+    } else {
+        delete shopConfig.ShopItems[itemId].MinLevel;
+    }
+    
+    if (maxLevel) {
+        shopConfig.ShopItems[itemId].MaxLevel = parseInt(maxLevel);
+    } else {
+        delete shopConfig.ShopItems[itemId].MaxLevel;
+    }
+    
+    $('#editItemModal').modal('hide');
+    saveToServer('Article modifié avec succès');
+});
+
 </script>
 @endsection

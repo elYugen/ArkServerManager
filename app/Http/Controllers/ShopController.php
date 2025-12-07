@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\ArkServerConfig;
+use App\Models\Logs;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ShopController extends Controller
 {
@@ -60,6 +62,12 @@ class ShopController extends Controller
             if (file_put_contents($config->shop_json_path, $jsonOutput) === false) {
                 return response()->json(['error' => 'Impossible d\'écrire dans le fichier'], 500);
             }
+
+            Logs::create([
+                'user_id' => Auth::user()->id,
+                'on_page' => 'Boutique',
+                'logs'    => 'A sauvegardé la configuration du shop'
+            ]);
 
             return response()->json([
                 'success' => true,
@@ -176,6 +184,12 @@ class ShopController extends Controller
                 return response()->json(['error' => 'Impossible d\'écrire dans le fichier'], 500);
             }
 
+            Logs::create([
+                'user_id' => Auth::user()->id,
+                'on_page' => 'Boutique',
+                'logs'    => 'A ajouté un kit au shop'
+            ]);
+
             return response()->json([
                 'success' => true,
                 'message' => 'Kit ajouté avec succès'
@@ -233,6 +247,12 @@ class ShopController extends Controller
                 return response()->json(['error' => 'Impossible d\'écrire dans le fichier'], 500);
             }
 
+            Logs::create([
+                'user_id' => Auth::user()->id,
+                'on_page' => 'Boutique',
+                'logs'    => 'A ajouté un item au shop'
+            ]);
+
             return response()->json([
                 'success' => true,
                 'message' => 'Article ajouté avec succès'
@@ -281,6 +301,12 @@ class ShopController extends Controller
                 return response()->json(['error' => 'Impossible d\'écrire dans le fichier'], 500);
             }
 
+            Logs::create([
+                'user_id' => Auth::user()->id,
+                'on_page' => 'Boutique',
+                'logs'    => 'A supprimé un kit du shop'
+            ]);
+
             return response()->json([
                 'success' => true,
                 'message' => 'Kit supprimé avec succès'
@@ -328,6 +354,12 @@ class ShopController extends Controller
             if (file_put_contents($config->shop_json_path, $jsonOutput) === false) {
                 return response()->json(['error' => 'Impossible d\'écrire dans le fichier'], 500);
             }
+
+            Logs::create([
+                'user_id' => Auth::user()->id,
+                'on_page' => 'Boutique',
+                'logs'    => 'A supprimé un item du shop'
+            ]);
 
             return response()->json([
                 'success' => true,
@@ -379,6 +411,12 @@ class ShopController extends Controller
                 return response()->json(['error' => 'Impossible d\'écrire dans le fichier'], 500);
             }
 
+            Logs::create([
+                'user_id' => Auth::user()->id,
+                'on_page' => 'Boutique',
+                'logs'    => 'A mis à jour un kit du shop'
+            ]);
+
             return response()->json([
                 'success' => true,
                 'message' => 'Kit mis à jour avec succès'
@@ -428,6 +466,12 @@ class ShopController extends Controller
             if (file_put_contents($config->shop_json_path, $jsonOutput) === false) {
                 return response()->json(['error' => 'Impossible d\'écrire dans le fichier'], 500);
             }
+
+            Logs::create([
+                'user_id' => Auth::user()->id,
+                'on_page' => 'Boutique',
+                'logs'    => 'A mis à jour un item du shop'
+            ]);
 
             return response()->json([
                 'success' => true,
