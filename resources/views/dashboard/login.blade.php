@@ -282,7 +282,7 @@
                         
                         <div class="mb-3">
                             <label for="register-name" class="form-label">
-                                <i class="bi bi-person me-1"></i>Nom complet
+                                <i class="bi bi-person me-1"></i>Pseudonyme
                             </label>
                             <div class="input-group">
                                 <span class="input-group-text">

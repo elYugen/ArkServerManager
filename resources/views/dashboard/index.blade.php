@@ -153,9 +153,7 @@ $(document).ready(function() {
     // UNE SEULE initialisation DataTable
     const table = $('#playersTable').DataTable({
         responsive: true,
-        language: {
-            url: '//cdn.datatables.net/plug-ins/1.13.7/i18n/fr-FR.json'
-        }
+
     });
 
     let currentKickSteamID = null;

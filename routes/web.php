@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ConfigurationController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PlayerController;
+use App\Http\Controllers\ShopController;
 use App\Services\RconService;
 use Illuminate\Support\Facades\Route;
 
@@ -25,6 +26,18 @@ Route::post('/configuration/edit', [ConfigurationController::class, 'update'])->
 Route::delete('/configuration/delete', [ConfigurationController::class, 'destroy'])->name('configuration.destroy');
 Route::get('/configuration/shop', [ConfigurationController::class, 'loadShopConfig'])->name('configuration.shop');
 Route::post('/configuration/shop/update', [ConfigurationController::class, 'updateShopConfig'])->name('configuration.shop.update');
+
+Route::get('/shop', [ShopController::class, 'index'])->name('shop.index');
+Route::post('/shop/save', [ShopController::class, 'save'])->name('shop.save');
+Route::get('/shop/kits', [ShopController::class, 'getKits'])->name('shop.kits');
+Route::get('/shop/items', [ShopController::class, 'getItems'])->name('shop.items');
+Route::post('/shop/kits', [ShopController::class, 'addKit'])->name('shop.kits.add');
+Route::post('/shop/items', [ShopController::class, 'addItem'])->name('shop.items.add');
+Route::delete('/shop/kits/{kitName}', [ShopController::class, 'deleteKit'])->name('shop.kits.delete');
+Route::delete('/shop/items/{itemId}', [ShopController::class, 'deleteItem'])->name('shop.items.delete');
+Route::put('/shop/kits/{kitName}', [ShopController::class, 'updateKit'])->name('shop.kits.update');
+Route::put('/shop/items/{itemId}', [ShopController::class, 'updateItem'])->name('shop.items.update');
+
 
 Route::get('/players', [ArkControllerTest::class, 'players']);
 

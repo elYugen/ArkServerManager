@@ -95,6 +95,7 @@ class ConfigurationController extends Controller
      */
     public function updateShopConfig(Request $request)
     {
+
         $config = ArkServerConfig::first();
         
         if (!$config || !$config->shop_json_path) {

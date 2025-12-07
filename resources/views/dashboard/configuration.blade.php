@@ -128,18 +128,71 @@
                     {{-- Configuration Serveur --}}
                     <div class="config-card">
                         <div class="d-flex justify-content-between align-items-center mb-4">
-                            <h4 class="mb-0"><i class="bi bi-server me-2"></i>Configuration Serveur</h4>
+                            <h4 class="mb-0">
+                                <i class="bi bi-server me-2"></i>Configuration du Serveur
+                            </h4>
                             <div>
-                                <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#editServerModal">
-                                    <i class="bi bi-pencil"></i> Modifier
+                                <button type="button" class="btn btn-outline-primary me-2" data-bs-toggle="modal" data-bs-target="#editServerModal">
+                                    <i class="bi bi-pencil-square me-1"></i>Modifier
+                                </button>
+                                <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">
+                                    <i class="bi bi-trash me-1"></i>Supprimer
                                 </button>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-md-3"><strong>IP:</strong> {{ $config->ip }}</div>
-                            <div class="col-md-3"><strong>Port:</strong> {{ $config->port }}</div>
-                            <div class="col-md-3"><strong>Password:</strong> {{ $config->password ? '••••••••' : 'Non défini' }}</div>
-                            <div class="col-md-3"><strong>Fichier JSON:</strong> {{ basename($config->shop_json_path) }}</div>
+
+                        <div class="row g-4">
+                            <div class="col-md-6">
+                                <div class="p-3 bg-light rounded">
+                                    <div class="d-flex align-items-center mb-2">
+                                        <i class="bi bi-hdd-network text-primary me-2 fs-4"></i>
+                                        <strong>Adresse IP</strong>
+                                    </div>
+                                    <p class="mb-0 fs-5">{{ $config->ip }}</p>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="p-3 bg-light rounded">
+                                    <div class="d-flex align-items-center mb-2">
+                                        <i class="bi bi-door-open text-primary me-2 fs-4"></i>
+                                        <strong>Port RCON</strong>
+                                    </div>
+                                    <p class="mb-0 fs-5">{{ $config->port }}</p>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="p-3 bg-light rounded">
+                                    <div class="d-flex align-items-center mb-2">
+                                        <i class="bi bi-key-fill text-primary me-2 fs-4"></i>
+                                        <strong>Mot de passe RCON</strong>
+                                    </div>
+                                    <p class="mb-0 fs-5">{{ $config->password ? '••••••••' : 'Non défini' }}</p>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="p-3 bg-light rounded">
+                                    <div class="d-flex align-items-center mb-2">
+                                        <i class="bi bi-folder2-open text-primary me-2 fs-4"></i>
+                                        <strong>Chemin JSON de configuration ArkShop</strong>
+                                    </div>
+                                    <p class="mb-0 text-truncate" title="{{ $config->shop_json_path }}">{{ $config->shop_json_path }}</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr class="my-4">
+
+                        <div class="d-flex justify-content-between align-items-center">
+                            <small class="text-muted">
+                                <i class="bi bi-clock-history me-1"></i>
+                                Dernière mise à jour: {{ $config->updated_at->format('d/m/Y à H:i') }}
+                            </small>
+                            <!--<button type="button" class="btn btn-outline-success" onclick="testConnection()">
+                                <i class="bi bi-wifi me-2"></i>Tester la Connexion
+                            </button>-->
                         </div>
                     </div>
 
@@ -245,8 +298,8 @@
                                 </div>
 
                                 <div class="text-end">
-                                    <button type="submit" class="btn btn-success btn-lg">
-                                        <i class="bi bi-save me-2"></i>Enregistrer les modifications
+                                    <button type="submit" class="btn btn-success btn-lg" style="font-size: 16px">
+                                        <i class="bi bi-save me-1"></i>Enregistrer les modifications
                                     </button>
                                 </div>
                             </form>
@@ -265,37 +318,119 @@
 
 {{-- Modal Edit Server --}}
 <div class="modal fade" id="editServerModal" tabindex="-1">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Modifier Configuration Serveur</h5>
+                <h5 class="modal-title">
+                    <i class="bi bi-pencil-square me-2"></i>Modifier Configuration Serveur
+                </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <form action="{{ route('configuration.store') }}" method="POST">
                 @csrf
                 <div class="modal-body">
-                    <div class="mb-3">
-                        <label class="form-label">IP</label>
-                        <input type="text" class="form-control" name="ip" value="{{ $config->ip ?? '' }}">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">
+                                <i class="bi bi-hdd-network me-1"></i>Adresse IP
+                            </label>
+                            <input type="text" class="form-control" name="ip" value="{{ $config->ip ?? '' }}" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">
+                                <i class="bi bi-door-open me-1"></i>Port RCON
+                            </label>
+                            <input type="number" class="form-control" name="port" value="{{ $config->port ?? '' }}" min="1" max="65535" required>
+                        </div>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Port</label>
-                        <input type="number" class="form-control" name="port" value="{{ $config->port ?? '' }}">
+                        <label class="form-label">
+                            <i class="bi bi-key-fill me-1"></i>Mot de Passe RCON
+                        </label>
+                        <input type="password" class="form-control" name="password" value="{{ $config->password ?? '' }}" placeholder="Laissez vide si inchangé">
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Password</label>
-                        <input type="password" class="form-control" name="password" value="{{ $config->password ?? '' }}">
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Chemin JSON</label>
-                        <input type="text" class="form-control" name="shop_json_path" value="{{ $config->shop_json_path ?? '' }}">
+                        <label class="form-label">
+                            <i class="bi bi-folder2-open me-1"></i>Chemin JSON de configuration ArkShop
+                        </label>
+                        <input type="text" class="form-control" name="shop_json_path" value="{{ $config->shop_json_path ?? '' }}" required>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-                    <button type="submit" class="btn btn-primary">Enregistrer</button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-check-circle me-1"></i>Enregistrer
+                    </button>
                 </div>
             </form>
+        </div>
+    </div>
+</div>
+
+{{-- Modal Delete Server Config --}}
+<div class="modal fade" id="deleteModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title">
+                    <i class="bi bi-exclamation-triangle me-2"></i>Confirmer la Suppression
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p>Êtes-vous sûr de vouloir supprimer cette configuration ?</p>
+                <p class="text-danger mb-0"><strong>Cette action est irréversible.</strong></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                <form action="{{ route('configuration.destroy', $config->id) }}" method="POST" class="d-inline">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn btn-danger">
+                        <i class="bi bi-trash me-1"></i>Supprimer
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{-- Modal Success Save --}}
+<div class="modal fade" id="successModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-success text-white">
+                <h5 class="modal-title">
+                    <i class="bi bi-check-circle me-2"></i>Succès
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p class="mb-0">✅ La configuration du shop a été sauvegardée avec succès !</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" data-bs-dismiss="modal">OK</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{-- Modal Error Save --}}
+<div class="modal fade" id="errorModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title">
+                    <i class="bi bi-exclamation-triangle me-2"></i>Erreur
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p id="errorModalMessage" class="mb-0"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Fermer</button>
+            </div>
         </div>
     </div>
 </div>
@@ -393,13 +528,23 @@ $('#shopConfigForm').on('submit', function(e) {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
         success: function(response) {
-            alert('✅ Configuration sauvegardée avec succès !');
+            // Afficher la modal de succès
+            const successModal = new bootstrap.Modal(document.getElementById('successModal'));
+            successModal.show();
         },
         error: function(xhr) {
-            alert('❌ Erreur lors de la sauvegarde: ' + (xhr.responseJSON?.error || 'Erreur inconnue'));
+            // Afficher la modal d'erreur
+            const errorMessage = xhr.responseJSON?.error || 'Erreur inconnue lors de la sauvegarde';
+            $('#errorModalMessage').text('❌ ' + errorMessage);
+            const errorModal = new bootstrap.Modal(document.getElementById('errorModal'));
+            errorModal.show();
         }
     });
 });
+
+function testConnection() {
+    alert('à faire');
+}
 @endif
 </script>
 @endsection

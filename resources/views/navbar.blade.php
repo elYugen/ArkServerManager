@@ -137,7 +137,7 @@
             </a>
         </li>
         <li class="nav-item">
-            <a href="#" class="nav-link">
+            <a href="{{ route('shop.index') }}" class="nav-link {{ request()->routeIs('shop.*') ? 'active' : '' }}" class="nav-link">
                 <span><i class="bi bi-cart"></i> Boutique</span>
             </a>
         </li>
