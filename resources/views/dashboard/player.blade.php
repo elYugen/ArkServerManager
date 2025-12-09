@@ -15,18 +15,16 @@
         max-width: 95%;
     }
 
-    /* Responsive styles */
+    /* Responsive */
     @media (max-width: 768px) {
         .main-content {
             margin-left: 0;
         }
 
-        /* Ajustements pour les modales sur mobile */
         .modal-dialog {
             margin: 0.5rem;
         }
 
-        /* Table responsive */
         #playersTable {
             font-size: 0.875rem;
         }
@@ -173,7 +171,7 @@ $(document).ready(function() {
     $('#confirmKickBtn').on('click', function() {
         if (!currentKickSteamID) return;
 
-        fetch('/send-rcon', {
+        fetch('{{ route('rcon.send') }}', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -187,11 +185,10 @@ $(document).ready(function() {
         .then(data => {
             alert("Commande envoyée");
             
-            // Ferme la modal kick
             let kickModal = bootstrap.Modal.getInstance(document.getElementById('kickModal'));
             kickModal.hide();
             
-            // Recharger la liste des joueurs après 2 secondes
+            // recharger la liste des joueurs après 2 secondes
             setTimeout(() => {
                 location.reload();
             }, 2000);
@@ -201,16 +198,15 @@ $(document).ready(function() {
         currentKickSteamID = null;
     });
 
-    // Envoi de la commande RCON via la modal
+    // envoi de la commande RCON via la modal
     $('#confirmSendCommand').on('click', function() {
         const command = $('#rconCommandInput').val();
         if (!command) return;
         
-        // Ferme la modal d'envoi AVANT d'ouvrir la modal résultat
         let sendModal = bootstrap.Modal.getInstance(document.getElementById('rconModal'));
         sendModal.hide();
         
-        fetch('/send-rcon', {
+        fetch('{{ route('rcon.send') }}', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

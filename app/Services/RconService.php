@@ -10,17 +10,22 @@ class RconService
     protected $rcon;
     protected $server;
 
-    public function __construct(ArkServerConfig $server)
+    public function __construct()
     {
-        $this->server = $server;
+        $this->server = ArkServerConfig::first();
+
+        if (!$this->server) {
+            throw new \Exception("Aucune configuration RCON détectée dans la base de données.");
+        }
 
         $this->rcon = new Rcon(
-            $server->ip,
-            $server->port,
-            $server->password,
+            $this->server->ip,
+            $this->server->port,
+            $this->server->password,
             3
         );
     }
+
 
     public function send($command)
     {

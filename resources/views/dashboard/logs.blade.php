@@ -3,7 +3,6 @@
 @section('styles')
 <link rel="stylesheet" href="//cdn.datatables.net/2.3.5/css/dataTables.dataTables.min.css">
 <style>
-    /* Main content area */
     .main-content {
         margin-left: 250px;
         transition: margin-left 0.3s ease-in-out;
@@ -15,18 +14,16 @@
         max-width: 95%;
     }
 
-    /* Responsive styles */
+    /* Responsive*/
     @media (max-width: 768px) {
         .main-content {
             margin-left: 0;
         }
 
-        /* Ajustements pour les modales sur mobile */
         .modal-dialog {
             margin: 0.5rem;
         }
 
-        /* Table responsive */
         #playersTable {
             font-size: 0.875rem;
         }
@@ -52,8 +49,6 @@
 
 @section('content')
 @include('navbar')
-
-<!-- Main content area -->
 <div class="main-content">
     <div class="container py-4">
 
@@ -71,7 +66,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <!-- lignes injectées par JS -->
+                        <!-- ajouté par le js -->
                     </tbody>
                 </table>
             </div>
@@ -98,7 +93,7 @@ const logsTable = $('#logsTable').DataTable({
     }
 });
 
-// Chargement des logs
+// chargement des logs
 fetch('{{ route('logs.get') }}')
     .then(res => res.json())
     .then(data => {

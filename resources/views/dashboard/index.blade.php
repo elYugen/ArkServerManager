@@ -3,7 +3,6 @@
 @section('styles')
 <link rel="stylesheet" href="//cdn.datatables.net/2.3.5/css/dataTables.dataTables.min.css">
 <style>
-    /* Main content area */
     .main-content {
         margin-left: 250px;
         transition: margin-left 0.3s ease-in-out;
@@ -15,18 +14,16 @@
         max-width: 95%;
     }
 
-    /* Responsive styles */
+    /* responsive */
     @media (max-width: 768px) {
         .main-content {
             margin-left: 0;
         }
 
-        /* Ajustements pour les modales sur mobile */
         .modal-dialog {
             margin: 0.5rem;
         }
 
-        /* Table responsive */
         #playersTable {
             font-size: 0.875rem;
         }
@@ -53,16 +50,15 @@
 @section('content')
 @include('navbar')
 
-<!-- Main content area -->
 <div class="main-content">
     <div class="container py-4">
-        <!-- Bouton pour ouvrir la modal d'envoi de commande -->
-        <button id="sendCommandBtn" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#rconModal">
+        <!-- ouvrir la modal d'envoi de commande -->
+        {{-- <button id="sendCommandBtn" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#rconModal">
             <i class="bi bi-terminal"></i> Envoyer une commande RCON
-        </button>
+        </button> --}}
 
-        <!-- Modal Bootstrap pour envoyer la commande -->
-        <div class="modal fade" id="rconModal" tabindex="-1" aria-labelledby="rconModalLabel" aria-hidden="true">
+        <!-- modal pour envoyer la commande -->
+        {{-- <div class="modal fade" id="rconModal" tabindex="-1" aria-labelledby="rconModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -78,10 +74,10 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> --}}
 
-        <!-- Modal Bootstrap pour afficher le résultat -->
-        <div class="modal fade" id="rconResultModal" tabindex="-1" aria-labelledby="rconResultModalLabel" aria-hidden="true">
+        <!-- modal  pour afficher le résultat -->
+        {{-- <div class="modal fade" id="rconResultModal" tabindex="-1" aria-labelledby="rconResultModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -96,7 +92,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> --}}
 
         <div class="mt-4">
             <h2>Joueurs connectés</h2>
@@ -120,7 +116,7 @@
 </div>
 
 @include('footer')
-<!-- Modal KickPlayer -->
+<!-- modal KickPlayer -->
 <div class="modal fade" id="kickModal" tabindex="-1" aria-labelledby="kickModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -148,9 +144,6 @@
 <script>
 
 $(document).ready(function() {
-
-
-    // UNE SEULE initialisation DataTable
     const table = $('#playersTable').DataTable({
         responsive: true,
 
@@ -158,8 +151,8 @@ $(document).ready(function() {
 
     let currentKickSteamID = null;
 
-    // Chargement des joueurs
-    fetch('http://127.0.0.1:8000/players')
+    // recupération joueurs en ligne
+    fetch('{{ route('rcon.players') }}')
         .then(res => res.json())
         .then(data => {
             let raw = data.players_raw;
@@ -206,7 +199,7 @@ $(document).ready(function() {
             table.draw();
         });
 
-    // OUVERTURE MODAL KICK
+    // ouverture de la modal pour kick
     $(document).on('click', '.kickBtn', function() {
         const name = $(this).data('name');
         const steamid = $(this).data('steamid');
@@ -218,11 +211,11 @@ $(document).ready(function() {
         modal.show();
     });
 
-    // CONFIRMATION DU KICK
+    // confirmation du kick
     $('#confirmKickBtn').on('click', function() {
         if (!currentKickSteamID) return;
 
-        fetch('/send-rcon', {
+        fetch('{{ route('rcon.send') }}', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -236,7 +229,6 @@ $(document).ready(function() {
         .then(data => {
             alert("Commande envoyée");
             
-            // Ferme la modal kick
             let kickModal = bootstrap.Modal.getInstance(document.getElementById('kickModal'));
             kickModal.hide();
         })
@@ -245,39 +237,38 @@ $(document).ready(function() {
         currentKickSteamID = null;
     });
 
-    // Envoi de la commande RCON via la modal
-    $('#confirmSendCommand').on('click', function() {
-        const command = $('#rconCommandInput').val();
-        if (!command) return;
+    // envoi de la commande rcon via la modal
+    // $('#confirmSendCommand').on('click', function() {
+    //     const command = $('#rconCommandInput').val();
+    //     if (!command) return;
         
-        // Ferme la modal d'envoi AVANT d'ouvrir la modal résultat
-        let sendModal = bootstrap.Modal.getInstance(document.getElementById('rconModal'));
-        sendModal.hide();
+    //     let sendModal = bootstrap.Modal.getInstance(document.getElementById('rconModal'));
+    //     sendModal.hide();
         
-        fetch('/send-rcon', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': '{{ csrf_token() }}'
-            },
-            body: JSON.stringify({ command })
-        })
-        .then(res => res.json())
-        .then(data => {
-            setTimeout(() => {
-                $('#rconResult').text(data.result || "Aucune réponse");
-                let resultModal = new bootstrap.Modal(document.getElementById('rconResultModal'));
-                resultModal.show();
-            }, 300);
-        })
-        .catch(err => {
-            setTimeout(() => {
-                $('#rconResult').text('Erreur : ' + err);
-                let resultModal = new bootstrap.Modal(document.getElementById('rconResultModal'));
-                resultModal.show();
-            }, 300);
-        });
-    });
+    //     fetch('{{ route('rcon.send') }}', {
+    //         method: 'POST',
+    //         headers: {
+    //             'Content-Type': 'application/json',
+    //             'X-CSRF-TOKEN': '{{ csrf_token() }}'
+    //         },
+    //         body: JSON.stringify({ command })
+    //     })
+    //     .then(res => res.json())
+    //     .then(data => {
+    //         setTimeout(() => {
+    //             $('#rconResult').text(data.result || "Aucune réponse");
+    //             let resultModal = new bootstrap.Modal(document.getElementById('rconResultModal'));
+    //             resultModal.show();
+    //         }, 300);
+    //     })
+    //     .catch(err => {
+    //         setTimeout(() => {
+    //             $('#rconResult').text('Erreur : ' + err);
+    //             let resultModal = new bootstrap.Modal(document.getElementById('rconResultModal'));
+    //             resultModal.show();
+    //         }, 300);
+    //     });
+    // });
 });
 
 </script>

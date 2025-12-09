@@ -53,7 +53,7 @@
                     </div>
                 @endif
 
-                {{-- Kits Section --}}
+                {{-- section kit --}}
                 <div class="config-card">
                     <div class="d-flex justify-content-between align-items-center mb-4">
                         <h4 class="mb-0">
@@ -78,13 +78,13 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <!-- Rempli par JavaScript -->
+                                <!-- remplis par js -->
                             </tbody>
                         </table>
                     </div>
                 </div>
 
-                {{-- Shop Items Section --}}
+                {{-- section item dans le shop --}}
                 <div class="config-card">
                     <div class="d-flex justify-content-between align-items-center mb-4">
                         <h4 class="mb-0">
@@ -109,7 +109,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <!-- Rempli par JavaScript -->
+                                <!-- remplis par js -->
                             </tbody>
                         </table>
                     </div>
@@ -119,7 +119,7 @@
     </div>
 </div>
 
-{{-- Modal Add Kit --}}
+{{-- modal ajout kit --}}
 <div class="modal fade" id="addKitModal" tabindex="-1">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
@@ -233,7 +233,7 @@
     </div>
 </div>
 
-{{-- Modal Add Item --}}
+{{-- modal ajout objet --}}
 <div class="modal fade" id="addItemModal" tabindex="-1">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -282,7 +282,7 @@
                         </div>
                     </div>
 
-                    {{-- Item Type Fields --}}
+                    {{-- chamsp du formulaire --}}
                     <div id="itemFields" class="type-fields">
                         <hr>
                         <h6>Configuration Item</h6>
@@ -302,7 +302,7 @@
                         </div>
                     </div>
 
-                    {{-- Dino Type Fields --}}
+                    {{-- champ lié aux dino --}}
                     <div id="dinoFields" class="type-fields" style="display:none;">
                         <hr>
                         <h6>Configuration Dino</h6>
@@ -333,7 +333,7 @@
                         </div>
                     </div>
 
-                    {{-- Beacon Type Fields --}}
+                    {{-- champ lié aux beacon --}}
                     <div id="beaconFields" class="type-fields" style="display:none;">
                         <hr>
                         <h6>Configuration Beacon</h6>
@@ -343,7 +343,7 @@
                         </div>
                     </div>
 
-                    {{-- Experience Type Fields --}}
+                    {{-- champ lié a l'xp --}}
                     <div id="experienceFields" class="type-fields" style="display:none;">
                         <hr>
                         <h6>Configuration Experience</h6>
@@ -362,7 +362,7 @@
                         </div>
                     </div>
 
-                    {{-- Command Type Fields --}}
+                    {{-- champ commande si commande en tant qu'article --}}
                     <div id="commandFields" class="type-fields" style="display:none;">
                         <hr>
                         <h6>Configuration Commande</h6>
@@ -387,7 +387,7 @@
     </div>
 </div>
 
-{{-- Modal Success --}}
+{{-- modal succes --}}
 <div class="modal fade" id="successModal" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -407,7 +407,7 @@
     </div>
 </div>
 
-{{-- Modal Error --}}
+{{-- modal erreur --}}
 <div class="modal fade" id="errorModal" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -427,7 +427,7 @@
     </div>
 </div>
 
-{{-- Modal View Kit --}}
+{{-- modal vue kit --}}
 <div class="modal fade" id="viewKitModal" tabindex="-1">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -438,7 +438,7 @@
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body" id="viewKitContent">
-                <!-- Contenu injecté dynamiquement -->
+                <!-- content ajouté après -->
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
@@ -447,7 +447,7 @@
     </div>
 </div>
 
-{{-- Modal View Item --}}
+{{-- modal vue item --}}
 <div class="modal fade" id="viewItemModal" tabindex="-1">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -458,7 +458,7 @@
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body" id="viewItemContent">
-                <!-- Contenu injecté dynamiquement -->
+                <!-- content ajouté après -->
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
@@ -467,7 +467,7 @@
     </div>
 </div>
 
-{{-- Modal Edit Kit --}}
+{{-- modal edition kit --}}
 <div class="modal fade" id="editKitModal" tabindex="-1">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
@@ -480,7 +480,7 @@
             <form id="editKitForm">
                 <input type="hidden" id="edit_kit_name">
                 <div class="modal-body">
-                    <!-- Identique au form d'ajout mais pré-rempli -->
+                    <!-- identique au form d'ajout mais pré-rempli -->
                     <div class="row mb-3">
                         <div class="col-md-6">
                             <label class="form-label">Description</label>
@@ -509,7 +509,7 @@
     </div>
 </div>
 
-{{-- Modal Edit Item --}}
+{{-- modal edition d'item --}}
 <div class="modal fade" id="editItemModal" tabindex="-1">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -573,7 +573,7 @@ $(document).ready(function() {
 });
 
 function loadShopData() {
-    // Charger depuis la route configuration.shop (qui lit le JSON)
+    // charger depuis la route configuration.shop (qui lit le JSON)
     $.get('{{ route("configuration.shop") }}', function(data) {
         shopConfig = data;
         console.log('Loaded shop config:', shopConfig);
@@ -586,11 +586,11 @@ function loadShopData() {
 }
 
 function saveToServer(message) {
-    console.log('=== SAVING TO SERVER ===');
-    console.log('Route:', '{{ route("shop.save") }}');
-    console.log('Full shopConfig:', JSON.stringify(shopConfig, null, 2));
-    console.log('Kits count:', Object.keys(shopConfig.Kits || {}).length);
-    console.log('ShopItems count:', Object.keys(shopConfig.ShopItems || {}).length);
+    // debug
+    // console.log('Route:', '{{ route("shop.save") }}');
+    // console.log('shopConfig:', JSON.stringify(shopConfig, null, 2));
+    // console.log('Kits count:', Object.keys(shopConfig.Kits || {}).length);
+    // console.log('ShopItems count:', Object.keys(shopConfig.ShopItems || {}).length);
     
     $.ajax({
         url: '{{ route("shop.save") }}',
@@ -608,17 +608,17 @@ function saveToServer(message) {
             const successModal = new bootstrap.Modal(document.getElementById('successModal'));
             successModal.show();
             
-            // Fermer les modals d'ajout
+            // fermer les modals d'ajout
             $('#addKitModal').modal('hide');
             $('#addItemModal').modal('hide');
             
-            // Recharger depuis le serveur après un délai
+            // recharger depuis le serveur après un délai
             setTimeout(() => {
                 console.log('Reloading data from server...');
                 loadShopData();
             }, 500);
             
-            // Reset forms
+            // reset le formulaire
             $('#addKitForm')[0].reset();
             $('#addItemForm')[0].reset();
             kitItemCounter = 1;
@@ -724,7 +724,7 @@ function loadItemsTable() {
     });
 }
 
-// Kit Items Management
+// gestions des items dans un kit
 function addKitItem() {
     const html = `
         <div class="kit-item-row row mb-2">
@@ -785,14 +785,14 @@ function removeKitDino(btn) {
     $(btn).closest('.kit-dino-row').remove();
 }
 
-// Change item type fields
+// changer le champ des type pour les items
 $('#itemType').on('change', function() {
     $('.type-fields').hide();
     const type = $(this).val();
     $(`#${type}Fields`).show();
 });
 
-// Submit Kit Form
+// soumettre le formulaire des kit
 $('#addKitForm').on('submit', function(e) {
     e.preventDefault();
     
@@ -815,7 +815,7 @@ $('#addKitForm').on('submit', function(e) {
         kitData.MaxLevel = parseInt(formData.get('max_level'));
     }
 
-    // Items
+    // items
     const items = [];
     $('.kit-item-row').each(function() {
         const blueprint = $(this).find('input[name*="[blueprint]"]').val();
@@ -830,7 +830,7 @@ $('#addKitForm').on('submit', function(e) {
     });
     if (items.length > 0) kitData.Items = items;
 
-    // Dinos
+    // dinos
     const dinos = [];
     $('.kit-dino-row').each(function() {
         const blueprint = $(this).find('input[name*="[blueprint]"]').val();
@@ -846,15 +846,15 @@ $('#addKitForm').on('submit', function(e) {
     });
     if (dinos.length > 0) kitData.Dinos = dinos;
 
-    // Ajouter au config local
+    // ajouter au config local
     if (!shopConfig.Kits) shopConfig.Kits = {};
     shopConfig.Kits[kitName] = kitData;
 
-    // Sauvegarder via la route dédiée
+    // save via la route lié
     saveToServer('Kit créé avec succès');
 });
 
-// Submit Item Form
+// soumettre le formulaire des items
 $('#addItemForm').on('submit', function(e) {
     e.preventDefault();
     
@@ -871,7 +871,7 @@ $('#addItemForm').on('submit', function(e) {
     if (formData.get('min_level')) itemData.MinLevel = parseInt(formData.get('min_level'));
     if (formData.get('max_level')) itemData.MaxLevel = parseInt(formData.get('max_level'));
 
-    // Type specific fields
+
     if (type === 'item') {
         const blueprint = formData.get('item_blueprint');
         if (blueprint) {
@@ -965,7 +965,7 @@ function showError(message) {
     errorModal.show();
 }
 
-// View Kit
+// voir un kit
 function viewKit(kitName) {
     const kit = shopConfig.Kits[kitName];
     if (!kit) return;
@@ -1015,7 +1015,7 @@ function viewKit(kitName) {
     modal.show();
 }
 
-// View Item
+// voir un item
 function viewItem(itemId) {
     const item = shopConfig.ShopItems[itemId];
     if (!item) return;
@@ -1093,7 +1093,7 @@ function viewItem(itemId) {
     modal.show();
 }
 
-// Edit Kit
+// modifier un kit
 function editKit(kitName) {
     const kit = shopConfig.Kits[kitName];
     if (!kit) return;
@@ -1107,7 +1107,7 @@ function editKit(kitName) {
     modal.show();
 }
 
-// Edit Item
+// modifier un item
 function editItem(itemId) {
     const item = shopConfig.ShopItems[itemId];
     if (!item) return;
@@ -1122,7 +1122,7 @@ function editItem(itemId) {
     modal.show();
 }
 
-// Submit Edit Kit
+// soumettre l'edition d'un kit
 $('#editKitForm').on('submit', function(e) {
     e.preventDefault();
     
@@ -1137,7 +1137,7 @@ $('#editKitForm').on('submit', function(e) {
     saveToServer('Kit modifié avec succès');
 });
 
-// Submit Edit Item
+// soumettre l'edition d'un item
 $('#editItemForm').on('submit', function(e) {
     e.preventDefault();
     

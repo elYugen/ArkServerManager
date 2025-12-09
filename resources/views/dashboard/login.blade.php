@@ -1,11 +1,6 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Connexion - Panel ASA</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+@extends('base')
+@section('title', 'Connexion')
+@section('styles')
     <style>
         body {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -184,8 +179,8 @@
             font-size: 0.9rem;
         }
     </style>
-</head>
-<body>
+@endsection
+@section('content')
     <div class="auth-container">
         <div class="auth-card">
             <div class="auth-header">
@@ -211,7 +206,7 @@
                     </div>
                 @endif
 
-                <!-- LOGIN FORM -->
+                <!-- formulaire connexion -->
                 <div class="form-tab-content active" id="login-form">
                     <form action="{{ route('auth.login') }}" method="POST">
                         @csrf
@@ -230,7 +225,7 @@
                                     id="login-email" 
                                     name="email" 
                                     value="{{ old('email') }}"
-                                    placeholder="votre@email.com"
+                                    placeholder="clau@dine.com"
                                     required
                                     autofocus
                                 >
@@ -275,7 +270,7 @@
                     </form>
                 </div>
 
-                <!-- REGISTER FORM -->
+                <!-- formulaire inscription -->
                 <div class="form-tab-content" id="register-form">
                     <form action="{{ route('auth.register') }}" method="POST">
                         @csrf
@@ -390,26 +385,26 @@
             </small>
         </div>
     </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+@endsection
+@section('script')
     <script>
-        // Switch between login and register tabs
+        // switch entre le login et l'inscription
         document.querySelectorAll('.tab-btn').forEach(btn => {
             btn.addEventListener('click', function() {
-                // Remove active class from all tabs and contents
+                // supprime les class active de chaque onglet
                 document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
                 document.querySelectorAll('.form-tab-content').forEach(c => c.classList.remove('active'));
                 
-                // Add active class to clicked tab
+                // ajoute le tag active a une class
                 this.classList.add('active');
                 
-                // Show corresponding form
+                // montre le formulaire correspondant
                 const tabName = this.dataset.tab;
                 document.getElementById(tabName + '-form').classList.add('active');
             });
         });
 
-        // Toggle password visibility
+        // affiche le mdp
         function togglePassword(inputId, icon) {
             const input = document.getElementById(inputId);
             if (input.type === 'password') {
@@ -423,10 +418,9 @@
             }
         }
 
-        // Auto-switch to register tab if there are validation errors for registration
+        // switch auto sur inscription si il y a des erreurs dans le formulaire
         @error('name')
             document.querySelector('[data-tab="register"]').click();
         @enderror
     </script>
-</body>
-</html>
+@endsection

@@ -37,7 +37,6 @@
         cursor: pointer;
     }
 
-    /* Style moderne pour les liens de navigation */
     .nav-link {
         border-radius: 0.5rem;
         padding: 0.75rem 1rem;
@@ -96,15 +95,14 @@
     }
 </style>
 
-<!-- Bouton toggle pour mobile -->
 <button class="sidebar-toggle" id="sidebarToggle">
     <i class="bi bi-list" style="font-size: 1.5rem;"></i>
 </button>
 
-<!-- Overlay -->
+
 <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
-<!-- Sidebar -->
+
 <div class="sidebar d-flex flex-column flex-shrink-0 p-3 bg-white" id="sidebar">
     <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none" style="margin-bottom: 24px;">
         <img src="https://cdn2.steamgriddb.com/logo_thumb/49616ab5001dd01538f33c56818f9478.png" alt="Ark ASA Logo" width="92" height="58" class="me-2">
@@ -174,7 +172,7 @@
     @endif
 </div>
 
-<!-- JavaScript à ajouter avant la fermeture </body> -->
+
 <script>
     const sidebar = document.getElementById('sidebar');
     const sidebarToggle = document.getElementById('sidebarToggle');

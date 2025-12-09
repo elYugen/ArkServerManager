@@ -196,7 +196,7 @@
                         </div>
                     </div>
 
-                    {{-- Configuration Shop --}}
+                    {{-- Config Shop --}}
                     <div class="config-card">
                         <h4 class="mb-4"><i class="bi bi-cart-fill me-2"></i>Configuration ArkShop</h4>
                         
@@ -316,7 +316,7 @@
     </div>
 </div>
 
-{{-- Modal Edit Server --}}
+
 <div class="modal fade" id="editServerModal" tabindex="-1">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -367,7 +367,7 @@
     </div>
 </div>
 
-{{-- Modal Delete Server Config --}}
+
 <div class="modal fade" id="deleteModal" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -395,7 +395,7 @@
     </div>
 </div>
 
-{{-- Modal Success Save --}}
+
 <div class="modal fade" id="successModal" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -415,7 +415,7 @@
     </div>
 </div>
 
-{{-- Modal Error Save --}}
+
 <div class="modal fade" id="errorModal" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -460,7 +460,7 @@ function loadShopConfig() {
     $.get('{{ route("configuration.shop") }}', function(data) {
         console.log('Config loaded:', data);
         
-        // MySQL
+        // mysql
         $('#mysql_use').val(data.Mysql?.UseMysql ? 'true' : 'false');
         $('#mysql_host').val(data.Mysql?.MysqlHost || '');
         $('#mysql_port').val(data.Mysql?.MysqlPort || '');
@@ -468,13 +468,13 @@ function loadShopConfig() {
         $('#mysql_pass').val(data.Mysql?.MysqlPass || '');
         $('#mysql_db').val(data.Mysql?.MysqlDB || '');
         
-        // General
+        // general
         $('#reward_interval').val(data.General?.TimedPointsReward?.Interval || '');
         $('#items_per_page').val(data.General?.ItemsPerPage || '');
         $('#shop_display_time').val(data.General?.ShopDisplayTime || '');
         $('#shop_text_size').val(data.General?.ShopTextSize || '');
         
-        // Messages
+        // messages
         $('#msg_sender').val(data.Messages?.Sender || '');
         $('#msg_bought_item').val(data.Messages?.BoughtItem || '');
         $('#msg_bought_dino').val(data.Messages?.BoughtDino || '');
@@ -528,12 +528,10 @@ $('#shopConfigForm').on('submit', function(e) {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
         success: function(response) {
-            // Afficher la modal de succès
             const successModal = new bootstrap.Modal(document.getElementById('successModal'));
             successModal.show();
         },
         error: function(xhr) {
-            // Afficher la modal d'erreur
             const errorMessage = xhr.responseJSON?.error || 'Erreur inconnue lors de la sauvegarde';
             $('#errorModalMessage').text('❌ ' + errorMessage);
             const errorModal = new bootstrap.Modal(document.getElementById('errorModal'));

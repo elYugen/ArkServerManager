@@ -48,7 +48,24 @@ Route::prefix('/dashboard')->group(function () {
 
     });
 });
-Route::get('/players', [ArkControllerTest::class, 'players']);
+
+Route::prefix('/rcon')->group(function () {
+    Route::get('/players', [ArkControllerTest::class, 'players'])->name('rcon.players');
+    Route::post('/send-rcon', function (\Illuminate\Http\Request $request, RconService $rcon) {
+        $command = $request->input('command');
+        if (!$command) {
+            return response()->json(['success' => false, 'message' => 'Aucune commande fournie']);
+        }
+
+        $response = $rcon->send($command);
+
+        return response()->json([
+            'success' => true,
+            'command' => $command,
+            'result' => $response
+        ]);
+    })->name('rcon.send');
+});
 
 
 
@@ -78,34 +95,3 @@ Route::get('/rcon-test', function () {
     return $results;
 });
 
-Route::get('/test', function () {
-    $client = new \Thedudeguy\Rcon(
-        env('ARK_RCON_HOST'),
-        env('ARK_RCON_PORT'),
-        env('ARK_RCON_PASSWORD'),
-        3
-    );
-
-    if (!$client->connect()) {
-        return ['success' => false, 'error' => 'rcon connection failed'];
-    }
-
-    $response = $client->sendCommand('serverinfo');
-
-    return ['success' => true, 'response' => $response];
-});
-
-Route::post('/send-rcon', function (\Illuminate\Http\Request $request, RconService $rcon) {
-    $command = $request->input('command');
-    if (!$command) {
-        return response()->json(['success' => false, 'message' => 'Aucune commande fournie']);
-    }
-
-    $response = $rcon->send($command);
-
-    return response()->json([
-        'success' => true,
-        'command' => $command,
-        'result' => $response
-    ]);
-});
